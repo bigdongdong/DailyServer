@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.cxd.daily.dao.VersionDao">
+    <select id="queryLastestVersion" resultType="com.cxd.daily.entity.VersionBean">
+        SELECT *
+        FROM tb_version
+        ORDER BY versionCode DESC
+        LIMIT 1
+    </select>
+</mapper>
