@@ -1,5 +1,6 @@
 package com.cxd.daily.controller;
 
+import com.cxd.daily.controller.response.Common;
 import com.cxd.daily.dao.VersionDao;
 import com.cxd.daily.entity.VersionBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +27,29 @@ public class VersionController {
     @Autowired
     private VersionDao mVersionDao ;
 
-
+    /**
+     * 获取服务器最新版本信息
+     * @return
+     */
     @RequestMapping(value = "/get",method = RequestMethod.GET)
-    public VersionBean getVersion(){
-        return mVersionDao.queryLastestVersion();
+    public Common<VersionBean> getVersion(){
+        VersionBean vb = null ;
+        String message = null ;
+        vb = mVersionDao.queryLastestVersion();
+        if(vb == null){
+            message = "服务器异常";
+        }
+        return new Common<VersionBean>().create(vb,message);
     }
 
+    /**
+     * 下载最新版本的APK
+     * @return
+     */
     @RequestMapping(value = "/downloadApk",method = RequestMethod.GET)
     public ResponseEntity<FileSystemResource> downloadApk(){
         /*centOS*/
         File file = new File(mVersionDao.queryLastestVersion().getApkUrl());
-        /*windows*/
-        file = new File("F:\\git_projects\\Daily\\app\\build\\outputs\\apk\\debug\\app-debug.apk");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Content-Disposition", "attachment; filename=" + file.getName());
