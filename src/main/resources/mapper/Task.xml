@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.cxd.daily.dao.TaskDao">
+    <select id="getTodaySportTime" resultType="java.lang.Long">
+        <![CDATA[
+            select sum(sportTime) from tb_sport
+            where userId = #{userId} and (date >= #{startTime} and date <= #{endTime})
+        ]]>
+    </select>
+    <select id="getTodaySitBreakTimes" resultType="java.lang.Integer">
+        <![CDATA[
+            select count(*) from tb_sit
+            where userId = #{userId} and (sitBreakTime >= #{startTime} and sitBreakTime <= #{endTime})
+        ]]>
+    </select>
+    <select id="getTodaySleepDateTime" resultType="java.util.Date">
+        <![CDATA[
+            select sleepTime as todaySleepTime from tb_sleep
+            where userId = #{userId} and (sleepTime >= #{startTime} and sleepTime <= #{endTime})
+            order by sleepTime desc limit 1
+        ]]>
+    </select>
+
+</mapper>

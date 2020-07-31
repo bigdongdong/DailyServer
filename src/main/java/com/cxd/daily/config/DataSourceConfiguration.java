@@ -23,6 +23,11 @@ public class DataSourceConfiguration {
     @Value("${jdbc.password}")
     private String jdbcPassword;
 
+    /**
+     * C3p0连接池配置
+     * @return
+     * @throws PropertyVetoException
+     */
     @Bean(name = "dataSource")
     public ComboPooledDataSource createDataSource() throws PropertyVetoException {
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
@@ -31,8 +36,11 @@ public class DataSourceConfiguration {
         dataSource.setUser(jdbcUsername);
         dataSource.setPassword(jdbcPassword);
         
-        //关闭连接后不自动commit
+        //关闭连接后不自动commit【连接池关闭的时候是否自动地提交】
         dataSource.setAutoCommitOnClose(false);
+        //设置超时自动检测并重新连接
+        dataSource.setTestConnectionOnCheckin(true);
+        dataSource.setIdleConnectionTestPeriod(28800);
         
         return dataSource;
     }

@@ -4,8 +4,13 @@ package com.cxd.daily.controller;
 import com.cxd.daily.controller.response.Common;
 import com.cxd.daily.dao.UserDao;
 import com.cxd.daily.entity.UserBean;
+import com.cxd.daily.entity.UserSettingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 
 @RestController
 @RequestMapping(value = "/account")
@@ -49,5 +54,48 @@ public class AccountController {
         return new Common<UserBean>().create(userBean,message);
     }
 
+
+    /**
+     * 获取用户设置
+     * @param userId
+     * @return message===null
+     */
+    @RequestMapping(value = "/settings" , method = RequestMethod.GET)
+    public Common<UserSettingBean> settings(@RequestParam(value = "userId")int userId){
+        UserSettingBean usb = mUserDao.getUserSettings(userId);
+        if(usb == null){
+            usb = new UserSettingBean();
+        }
+
+        return new Common<UserSettingBean>().create(usb,null);
+    }
+
+    /**
+     * 更新设置
+     * @param userId
+     * @param sportTime
+     * @param sitStartTime
+     * @param sitEndTime
+     * @param sitSpaceTime
+     * @param sitBreakTimes
+     * @param sleepTime
+     * @return true成功 flase失败 message===null
+     */
+    @RequestMapping(value = "/updateSettings",method = {RequestMethod.GET,RequestMethod.POST})
+    public Common<Boolean> updateSettings(@RequestParam(value = "userId",required = true)int userId,
+                                         @RequestParam(value = "sportTime",required = false)Long sportTime,
+                                         @RequestParam(value = "sitStartTime",required = false) Date sitStartTime,
+                                         @RequestParam(value = "sitEndTime",required = false)Date sitEndTime,
+                                         @RequestParam(value = "sitSpaceTime",required = false)Long sitSpaceTime,
+                                         @RequestParam(value = "sitBreakTimes",required = false)Integer sitBreakTimes,
+                                         @RequestParam(value = "sleepTime",required = false) Time sleepTime
+                                        ){
+        UserSettingBean usb = mUserDao.getUserSettings(userId);
+        if(usb == null){
+            mUserDao.addUserSettings(userId);
+        }
+        boolean count = mUserDao.updateUserSettings(userId,sportTime,sitStartTime,sitEndTime,sitSpaceTime,sitBreakTimes,sleepTime);
+        return new Common<Boolean>().create(count,null);
+    }
 
 }

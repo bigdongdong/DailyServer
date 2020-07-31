@@ -5,11 +5,11 @@
 
 <mapper namespace = "com.cxd.daily.dao.UserDao">
     <select id="isExistUser" resultType="boolean">
-        <![CDATA[select count(id) from tb_user where name = #{name}]]>
+        select count(id) from tb_user where name = #{name}
     </select>
 
     <select id="verifyPassword" resultType="boolean">
-        <![CDATA[select count(id) from tb_user where name = #{name} and password = #{password}]]>
+        select count(id) from tb_user where name = #{name} and password = #{password}
     </select>
 
     <select id="getIdByName" resultType="int">
@@ -19,4 +19,39 @@
     <select id="getUserInfo" resultType="com.cxd.daily.entity.UserBean">
         select * from tb_user where id = #{id}
     </select>
+
+    <select id="getUserSettings" resultType="com.cxd.daily.entity.UserSettingBean">
+        select * from tb_user_settings where userId = #{userId}
+    </select>
+
+    <insert id="addUserSettings">
+        insert into tb_user_settings(userId) values(#{userId})
+    </insert>
+
+    <update id="updateUserSettings">
+        update tb_user_settings
+        <set>
+            <if test="sportTime != null">
+                sportTime = #{sportTime}
+            </if>
+            <if test="sitStartTime != null">
+                sitStartTime = #{sitStartTime}
+            </if>
+            <if test="sitEndTime != null">
+                sitEndTime = #{sitEndTime}
+            </if>
+            <if test="sitSpaceTime != null">
+                sitSpaceTime = #{sitSpaceTime}
+            </if>
+            <if test="sitBreakTimes != null">
+                sitBreakTimes = #{sitBreakTimes}
+            </if>
+            <if test="sleepTime != null">
+                sleepTime = #{sleepTime}
+            </if>
+        </set>
+        <where>
+            userId = #{userId}
+        </where>
+    </update>
 </mapper>
