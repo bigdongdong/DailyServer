@@ -5,59 +5,59 @@ import java.util.Date; //这个Date相当于sql里面的datetime
 
 public class UserSettingBean {
 
-    private int userId;
-    private long sportTime;
-    private Date sitStartTime;
-    private Date sitEndTime;
-    private long sitSpaceTime;
-    private long sitBreakTimes;
+    private Integer userId;
+    private Integer sportTime;
+    private Time sitStartTime;
+    private Time sitEndTime;
+    private Integer sitSpaceTime;
+    private Integer sitBreakTimes;
     private Time sleepTime;
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public long getSportTime() {
+    public Integer getSportTime() {
         return sportTime;
     }
 
-    public void setSportTime(long sportTime) {
+    public void setSportTime(Integer sportTime) {
         this.sportTime = sportTime;
     }
 
-    public Date getSitStartTime() {
+    public Time getSitStartTime() {
         return sitStartTime;
     }
 
-    public void setSitStartTime(Date sitStartTime) {
+    public void setSitStartTime(Time sitStartTime) {
         this.sitStartTime = sitStartTime;
     }
 
-    public Date getSitEndTime() {
+    public Time getSitEndTime() {
         return sitEndTime;
     }
 
-    public void setSitEndTime(Date sitEndTime) {
+    public void setSitEndTime(Time sitEndTime) {
         this.sitEndTime = sitEndTime;
     }
 
-    public long getSitSpaceTime() {
+    public Integer getSitSpaceTime() {
         return sitSpaceTime;
     }
 
-    public void setSitSpaceTime(long sitSpaceTime) {
+    public void setSitSpaceTime(Integer sitSpaceTime) {
         this.sitSpaceTime = sitSpaceTime;
     }
 
-    public long getSitBreakTimes() {
+    public Integer getSitBreakTimes() {
         return sitBreakTimes;
     }
 
-    public void setSitBreakTimes(long sitBreakTimes) {
+    public void setSitBreakTimes(Integer sitBreakTimes) {
         this.sitBreakTimes = sitBreakTimes;
     }
 

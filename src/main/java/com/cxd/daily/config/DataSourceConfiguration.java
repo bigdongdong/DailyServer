@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.beans.PropertyVetoException;
+import java.sql.Connection;
 
 @Configuration
 
@@ -41,7 +42,13 @@ public class DataSourceConfiguration {
         //设置超时自动检测并重新连接
         dataSource.setTestConnectionOnCheckin(true);
         dataSource.setIdleConnectionTestPeriod(28800);
-        
+        dataSource.setInitialPoolSize(8);
+        dataSource.setMaxPoolSize(20);
+        dataSource.setMinPoolSize(5);
+        dataSource.setAcquireIncrement(5);
+        dataSource.setMaxIdleTime(30);
+
         return dataSource;
     }
+
 }
