@@ -1,11 +1,12 @@
 package com.cxd.daily.config;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
 
@@ -30,24 +31,27 @@ public class DataSourceConfiguration {
      * @throws PropertyVetoException
      */
     @Bean(name = "dataSource")
-    public ComboPooledDataSource createDataSource() throws PropertyVetoException {
-        ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        dataSource.setDriverClass(jdbcDriver);
-        dataSource.setJdbcUrl(jdbcUrl);
-        dataSource.setUser(jdbcUsername);
+    public DataSource createDataSource() throws PropertyVetoException {
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUrl(jdbcUrl);
+        dataSource.setDriverClassName(jdbcDriver);
+        dataSource.setUsername(jdbcUsername);
         dataSource.setPassword(jdbcPassword);
-        
-        //关闭连接后不自动commit【连接池关闭的时候是否自动地提交】
-        dataSource.setAutoCommitOnClose(false);
-        //设置超时自动检测并重新连接
-        dataSource.setTestConnectionOnCheckin(true);
-        dataSource.setIdleConnectionTestPeriod(28800);
-        dataSource.setInitialPoolSize(8);
-        dataSource.setMaxPoolSize(20);
-        dataSource.setMinPoolSize(5);
-        dataSource.setAcquireIncrement(5);
-        dataSource.setMaxIdleTime(30);
-
+        //配置初始化大小、最小、最大
+        dataSource.setInitialSize(1);
+        dataSource.setMinIdle(1);
+        dataSource.setMaxActive(20);
+        //连接泄漏监测
+        dataSource.setRemoveAbandoned(true);
+        dataSource.setRemoveAbandonedTimeout(30);
+        //配置获取连接等待超时的时间
+        dataSource.setMaxWait(20000);
+        //配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        dataSource.setTimeBetweenEvictionRunsMillis(20000);
+        //防止过期
+        dataSource.setValidationQuery("SELECT 'x'");
+        dataSource.setTestWhileIdle(true);
+        dataSource.setTestOnBorrow(true);
         return dataSource;
     }
 

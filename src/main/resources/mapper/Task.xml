@@ -16,12 +16,30 @@
             where userId = #{userId} and to_days(date) = to_days(now())
         ]]>
     </select>
+    <select id="getTodayLastSitBreakTime" resultType="java.sql.Time">
+        <![CDATA[
+            select sitBreakTime from tb_sit
+            where userId = #{userId} and to_days(date) = to_days(now())
+            order by sitBreakTime desc limit 1
+        ]]>
+    </select>
     <select id="getTodaySleepDateTime" resultType="java.sql.Time">
         <![CDATA[
             select sleepTime as todaySleepTime from tb_sleep
             where userId = #{userId} and to_days(date) = to_days(now())
-            order by date desc limit 1
+            order by sleepTime desc limit 1
         ]]>
     </select>
 
+    <insert id="insertSportTime">
+        insert into tb_sport(userId,date,sportTime) values(#{userId},curdate(),#{sportTime})
+    </insert>
+
+    <insert id="insertSitBreakTime">
+        insert into tb_sit(userId,date,sitBreakTime) values(#{userId},curdate(),curtime())
+    </insert>
+
+    <insert id="insertSleepTime">
+        insert into tb_sleep(userId,date,sleepTime) values(#{userId},curdate(),#{sleepTime})
+    </insert>
 </mapper>

@@ -17,7 +17,7 @@
     </select>
 
     <select id="getUserInfo" resultType="com.cxd.daily.entity.UserBean">
-        select * from tb_user where id = #{id}
+        select * from tb_user where id = #{userId}
     </select>
 
     <select id="getUserSettings" resultType="com.cxd.daily.entity.UserSettingBean">
@@ -30,26 +30,26 @@
 
     <update id="updateUserSettings">
         update tb_user_settings
-        <set>
+        <trim prefix="set" suffixOverrides=",">
             <if test="sportTime != null">
-                sportTime = #{sportTime}
+                sportTime = #{sportTime},
             </if>
             <if test="sitStartTime != null">
-                sitStartTime = #{sitStartTime}
+                sitStartTime = #{sitStartTime},
             </if>
             <if test="sitEndTime != null">
-                sitEndTime = #{sitEndTime}
+                sitEndTime = #{sitEndTime},
             </if>
             <if test="sitSpaceTime != null">
-                sitSpaceTime = #{sitSpaceTime}
+                sitSpaceTime = #{sitSpaceTime},
             </if>
             <if test="sitBreakTimes != null">
-                sitBreakTimes = #{sitBreakTimes}
+                sitBreakTimes = #{sitBreakTimes},
             </if>
             <if test="sleepTime != null">
-                sleepTime = #{sleepTime}
+                sleepTime = #{sleepTime},
             </if>
-        </set>
+        </trim>
         <where>
             userId = #{userId}
         </where>

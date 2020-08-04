@@ -17,7 +17,7 @@ public interface UserDao {
     int getIdByName(String name);
 
     /*根据id获取个人信息*/
-    UserBean getUserInfo(int id);
+    UserBean getUserInfo(int userId);
 
     /*获取用户设置*/
     UserSettingBean getUserSettings(int userId);

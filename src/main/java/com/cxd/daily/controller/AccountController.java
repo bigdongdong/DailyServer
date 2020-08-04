@@ -41,13 +41,13 @@ public class AccountController {
 
     /**
      * 获取用户信息
-     * @param id 用户id
+     * @param userId 用户id
      * @return
      */
     @RequestMapping(value = "/info" , method = {RequestMethod.GET,RequestMethod.POST})
-    public Common<UserBean> info(@RequestParam(value = "id")int id){
+    public Common<UserBean> info(@RequestParam(value = "userId")int userId){
         String message = null ;
-        UserBean userBean = mUserDao.getUserInfo(id) ;
+        UserBean userBean = mUserDao.getUserInfo(userId) ;
         if(userBean == null){
             message = "用户信息丢失，请重新登录";
         }
@@ -63,10 +63,6 @@ public class AccountController {
     @RequestMapping(value = "/settings" , method = RequestMethod.GET)
     public Common<UserSettingBean> settings(@RequestParam(value = "userId")int userId){
         UserSettingBean usb = mUserDao.getUserSettings(userId);
-        if(usb == null){
-            usb = new UserSettingBean();
-        }
-
         return new Common<UserSettingBean>().create(usb,null);
     }
 

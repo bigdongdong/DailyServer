@@ -73,12 +73,105 @@ public class TaskController {
         return new Common<TodayTaskBean>().create(bean,null);
     }
 
+    /**
+     * 插入一条运动记录
+     * @param userId
+     * @param sportTime
+     * @return
+     */
+    @RequestMapping(value = "/insertSportTime",method = RequestMethod.GET)
+    public Common<Boolean> insertSportTime(@RequestParam(value = "userId")int userId,@RequestParam(value = "sportTime")int sportTime){
+        String message = null ;
+        UserSettingBean usb = mUserDao.getUserSettings(userId);
+        if(usb == null || usb.getSportTime() == null){
+            message = "请先设置每日运动时间！";
+            return new Common<Boolean>().create(null,message);
+        }
+        Boolean b = mTaskDao.insertSportTime(userId,sportTime);
+        return new Common<Boolean>().create(b,null);
+    }
+
+    /**
+     * 插入一条打破久坐记录
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/insertSitBreakTime",method = RequestMethod.GET)
+    public Common<Boolean> insertSitBreakTime(@RequestParam(value = "userId")int userId){
+
+        UserSettingBean usb = mUserDao.getUserSettings(userId);
+        if(usb == null){
+            return new Common<Boolean>().create(null,"请先设置打破久坐时间间隔！");
+        }
+        int spaceTime = usb.getSitSpaceTime();
+        /*查询今日最新一条打破久坐记录*/
+        Time lastTime = mTaskDao.getTodayLastSitBreakTime(userId);
+        if(spaceTime <= 0){
+            return new Common<Boolean>().create(null,"请先设置打破久坐时间间隔！");
+        }
+
+        Boolean b = null ;
+        if(lastTime != null){
+            /*计算两次间隔时间*/
+            String lastTimeStr = lastTime.toString();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            lastTimeStr = sdf.format(new Date())+" "+ lastTimeStr ;
+            long last = 0; //上一次的时间
+            try {
+                sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                last = sdf.parse(lastTimeStr).getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long now = System.currentTimeMillis(); //当前时间
+            /*时间过近*/
+            if(now < last || now - last < spaceTime*1000*60){
+                return new Common<Boolean>().create(null,"距离上次打破久坐时间过近，请稍后重试！");
+            }
+        }
+        /*正常情况，执行插入*/
+        b = mTaskDao.insertSitBreakTime(userId);
+
+        return new Common<Boolean>().create(b,null);
+    }
+
+    /**
+     * 插入一条早睡记录
+     * @param userId
+     * @param sleepTime
+     * @return 即使逾期也可以插入
+     */
+    @RequestMapping(value = "/insertSleepTime",method = RequestMethod.GET)
+    public Common<Boolean> insertSleepTime(@RequestParam(value = "userId")int userId,@RequestParam(value = "sleepTime")Time sleepTime){
+        UserSettingBean usb = mUserDao.getUserSettings(userId);
+        if(usb == null || usb.getSleepTime() == null){
+            return new Common<Boolean>().create(null,"请先设置早睡时间！");
+        }
+        Boolean b = mTaskDao.insertSleepTime(userId,sleepTime);
+        return new Common<Boolean>().create(b,null);
+    }
+
+
 //    public static void main(String[] args) {
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        System.out.println(sdf.format(new Date(1596038400000l)));  //2020-07-30 00:00:00
-//        System.out.println(sdf.format(new Date(1596124800000l)));  //2020-07-31 00:00:00
-//
-//        System.out.println("当前时间"+sdf.format(new Date(System.currentTimeMillis())));
+////            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+////        System.out.println(sdf.format(new Date(1596038400000l)));  //2020-07-30 00:00:00
+////        System.out.println(sdf.format(new Date(1596124800000l)));  //2020-07-31 00:00:00
+////
+////        System.out.println("当前时间"+sdf.format(new Date(System.currentTimeMillis())));
+//        String str = "15:47:45";
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        String today = sdf.format(new Date());
+//        today = today+" "+ str ;
+//        System.out.println(today);
+//        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date date = null;
+//        try {
+//            date = sdf.parse(today);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(date.getTime());
+//        System.out.println(new Date().getTime());
 //    }
 
 }
