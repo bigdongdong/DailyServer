@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+    <mapper namespace = "com.cxd.daily.dao.StatisticsDao">
+    <select id="getLast7SportTime" resultType="com.cxd.daily.entity.statistics.SportStatisticsDataBean">
+        <![CDATA[
+            select date,sum(sportTime) as thisDaySportTime from tb_sport
+            where userId = #{userId} and date >= #{last7Date} and date <= #{nowDate}
+            group by date
+            order by date asc
+        ]]>
+    </select>
+
+    <select id="getLast7SitBreakTimes" resultType="com.cxd.daily.entity.statistics.SitStatisticsDataBean">
+        <![CDATA[
+            select date,count(sitBreakTime) as thisDaySitTimes from tb_sit
+            where userId = #{userId} and date >= #{last7Date} and date <= #{nowDate}
+            group by date
+            order by date asc
+        ]]>
+    </select>
+
+    <select id="getLast7SleepTime" resultType="com.cxd.daily.entity.statistics.SleepStatisticsDataBean">
+        <![CDATA[
+            select date,max(sleepTime) as thisDaySleepTime from tb_sleep
+            where userId = #{userId} and date >= #{last7Date} and date <= #{nowDate}
+            group by date
+            order by date asc
+        ]]>
+    </select>
+</mapper>

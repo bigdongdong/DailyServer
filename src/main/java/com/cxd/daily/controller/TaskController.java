@@ -52,7 +52,7 @@ public class TaskController {
         if(usb != null){
             bean.setTargetSportTime(usb.getSportTime()); //目标运动时长
             bean.setTargetSitBreakTimes(usb.getSitBreakTimes()); //目标打破久坐次数
-            Time sleepTime = usb.getSleepTime() ;
+//            Time sleepTime = usb.getSleepTime() ;
             bean.setTargetSleepTime(usb.getSleepTime());
 //            if(sleepTime != null){
 //                bean.setTargetSleepTime(usb.getSleepTime().getTime());//目标早睡时间

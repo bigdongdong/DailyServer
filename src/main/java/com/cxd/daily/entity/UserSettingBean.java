@@ -6,12 +6,12 @@ import java.util.Date; //这个Date相当于sql里面的datetime
 public class UserSettingBean {
 
     private Integer userId;
-    private Integer sportTime;
+    private Integer sportTime;  //目标运动时长
     private Time sitStartTime;
     private Time sitEndTime;
     private Integer sitSpaceTime;
     private Integer sitBreakTimes;
-    private Time sleepTime;
+    private Time sleepTime; //目标睡觉时间
 
     public Integer getUserId() {
         return userId;
