@@ -3,6 +3,7 @@ package com.cxd.daily.controller;
 import com.cxd.daily.controller.response.Common;
 import com.cxd.daily.dao.StatisticsDao;
 import com.cxd.daily.dao.UserDao;
+import com.cxd.daily.entity.UserSettingBean;
 import com.cxd.daily.entity.statistics.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ public class StatisticsController {
     @RequestMapping(value = "/sport7" , method = RequestMethod.GET)
     public Common<SportStatisticsBean> getSport7(@RequestParam(value = "userId")int userId){
         if(mUserDao.getUserSettings(userId) == null){
-            new Common<SportStatisticsBean>().create(null,null);
+            return new Common<SportStatisticsBean>().create(null,null);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String now = sdf.format(new Date());
@@ -72,7 +73,7 @@ public class StatisticsController {
     @RequestMapping(value = "/sit7" ,method = RequestMethod.GET)
     public Common<SitStatisticsBean> getSit7(@RequestParam(value = "userId")int userId){
         if(mUserDao.getUserSettings(userId) == null){
-            new Common<SportStatisticsBean>().create(null,null);
+            return new Common<SitStatisticsBean>().create(null,null);
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -117,7 +118,7 @@ public class StatisticsController {
     @RequestMapping(value = "/sleep7" ,method = RequestMethod.GET)
     public Common<SleepStatisticsBean> getSleep7(@RequestParam(value = "userId")int userId){
         if(mUserDao.getUserSettings(userId) == null){
-            new Common<SportStatisticsBean>().create(null,null);
+            return new Common<SleepStatisticsBean>().create(null,null);
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
