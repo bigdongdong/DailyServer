@@ -87,6 +87,16 @@ public class TaskController {
             message = "请先设置每日运动时间！";
             return new Common<Boolean>().create(null,message);
         }
+        /*最多一天只能运动600分钟*/
+        Integer todaySportTime = mTaskDao.getTodaySportTime(userId);
+        if(todaySportTime < 600){
+            int still = 600 - todaySportTime ;
+            sportTime = Math.min(sportTime,still);
+        }else{
+            message = "今天运动时间已达上限600分钟！";
+            return new Common<Boolean>().create(null,message);
+        }
+
         Boolean b = mTaskDao.insertSportTime(userId,sportTime);
         return new Common<Boolean>().create(b,null);
     }
@@ -143,10 +153,41 @@ public class TaskController {
      */
     @RequestMapping(value = "/insertSleepTime",method = RequestMethod.GET)
     public Common<Boolean> insertSleepTime(@RequestParam(value = "userId")int userId,@RequestParam(value = "sleepTime")Time sleepTime){
+        String message = null ;
         UserSettingBean usb = mUserDao.getUserSettings(userId);
         if(usb == null || usb.getSleepTime() == null){
-            return new Common<Boolean>().create(null,"请先设置早睡时间！");
+            message = "请先设置早睡时间！" ;
+            return new Common<Boolean>().create(null,message);
         }
+        /*TODO 判断当前是否18:00之前*/
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        final String today = sdf.format(new Date());
+        String earliest = today+" 18:00:00";
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long earliestTime = 0;
+        try {
+            earliestTime = sdf.parse(earliest).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(earliestTime != 0){
+            sdf = new SimpleDateFormat("HH:mm:ss");
+            String sleep = today + " "+sdf.format(sleepTime);
+            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            long sleepTimes = 0;
+            try {
+                sleepTimes = sdf.parse(sleep).getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if(sleepTimes < earliestTime){
+                message = "现在太早了，请18:00以后再试" ;
+                return new Common<Boolean>().create(null,message);
+            }
+        }
+
         Boolean b = mTaskDao.insertSleepTime(userId,sleepTime);
         return new Common<Boolean>().create(b,null);
     }

@@ -34,7 +34,12 @@ public class AccountController {
         }else if(!mUserDao.verifyPassword(name,password)){
             message = "密码错误";
         }else{
-            userBean = mUserDao.getUserInfo(mUserDao.getIdByName(name));
+            int id = mUserDao.getIdByName(name) ;
+            if(id == 0){
+                message = "查无此人";
+            }else{
+                userBean = mUserDao.getUserInfo(id);
+            }
         }
         return new Common<UserBean>().create(userBean,message);
     }
