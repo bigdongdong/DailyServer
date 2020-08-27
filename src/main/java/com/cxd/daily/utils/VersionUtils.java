@@ -10,7 +10,7 @@ import java.security.MessageDigest;
 
 public class VersionUtils {
     public static void main(String[] args) {
-        File file = new File("F:\\git_projects\\Daily\\app\\build\\outputs\\apk\\debug\\Daily-3.0-debug.apk");
+        File file = new File("F:\\git_projects\\Daily\\app\\release\\Daily-5.0.1-release.apk");
 
         if (!file.isFile()) {
             return ;

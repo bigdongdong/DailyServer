@@ -11,7 +11,7 @@
 	</parent>
 		<groupId>com.cxd</groupId>
 		<artifactId>daily</artifactId>
-		<version>1.0</version>
+		<version>5.0.1</version>
 		<name>daily</name>
 	<description>daily app for the sus</description>
 
