@@ -88,7 +88,8 @@ public class TaskController {
             return new Common<Boolean>().create(null,message);
         }
         /*最多一天只能运动600分钟*/
-        Integer todaySportTime = mTaskDao.getTodaySportTime(userId);
+        Integer todaySportTimeInt =  mTaskDao.getTodaySportTime(userId); //判空
+        int todaySportTime = todaySportTimeInt == null ? 0 : todaySportTimeInt ;
         if(todaySportTime < 600){
             int still = 600 - todaySportTime ;
             sportTime = Math.min(sportTime,still);
